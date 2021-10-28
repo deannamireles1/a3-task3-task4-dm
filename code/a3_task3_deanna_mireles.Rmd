@@ -1,0 +1,45 @@
+---
+title: "Sea Urchins"
+author: "Deanna Mireles"
+date: "10/27/2021"
+output: 
+  html_document: 
+    toc: yes
+    theme: yeti
+---
+
+## Overview
+
+This code uses data for X. The data was collected in X by X.
+
+**Data citation:** Reed, D. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b. 
+
+# Setup
+
+```{r setup, include=FALSE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+library(tidyverse)
+library(janitor)
+library(here)
+```
+
+Here I read in the sea urchin data using the here() function.
+
+```{r}
+sea_urchin <- read_csv(here("data", "urchins.csv")) %>% 
+  clean_names()
+```
+
+For reference, the first 6 lines of the dataset are shown below:
+
+```{r}
+head(sea_urchin)
+```
+
+
+
+
+
+
+
