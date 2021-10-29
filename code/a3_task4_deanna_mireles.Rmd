@@ -10,7 +10,7 @@ output:
 
 ## Overview
 
-This code uses data for red and purple sea urchins and in this task X. The data was collected in Santa Barbara by Daniel Reed in 2020 as part of LTER.
+This code uses data for red and purple sea urchins and in this task we focus on looking at the mean size of the purple urchins in under the control or annual section of Naples Reef. The data was collected in Santa Barbara by Daniel Reed in 2020 as part of LTER.
 
 **Data citation:** Reed, D. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b. 
 
@@ -22,6 +22,10 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(janitor)
 library(here)
+library(kableExtra)
+library(lubridate)
+library(dplyr)
+
 ```
 
 Here I read in the sea urchin data using the here() function.
@@ -39,22 +43,79 @@ head(sea_urchin)
 
 ## Data Wrangling
 
+
+Here I wrangled data to find the purple urchin data filtered for the Naples reef in the year 2010. I called this purple_naples_2010 and included the treatment type as a variable.
+
 ```{r}
+# Create new subset of data to include treatment as a variable and filter for Naples Reef data for 2010.
+
+purple_naples_2010 <- sea_urchin %>% 
+  mutate(date_new = ymd(date)) %>% 
+  mutate(year = year(date_new)) %>% 
+  mutate(site_full = case_when(
+    site %in% c("NAPL") ~ "Naples Reef",
+    site %in% c("AQUE") ~ "Arroyo Quemado Reef",
+    site %in% c("CARP") ~ "Carpinteria Reef",
+    site %in% c("MOHK") ~ "Mohawk Reef",
+    site %in% c("IVEE") ~ "Isla Vista Reef")) %>%
+  filter(common_name == "Purple Urchin", 
+         site_full == "Naples Reef", 
+         year == 2010) 
 
 ```
 
 ## Data Visualization- Exploratory histogram and qq-plot
 
 ```{r}
+# Exploratory Histograms for the purple urchin size distribution separated by treatment in Naples Reef 2010.
+
+ggplot(data= purple_naples_2010, aes(x = size)) +
+  geom_histogram() +
+  facet_wrap(~ treatment)
+
+# Exploratory QQ-plots for the purple urchin size distribution separated by treatment in Naples Reef 2010.
+
+ggplot(data = purple_naples_2010, aes(sample = size)) +
+  geom_qq() +
+  facet_wrap(~ treatment)
 
 ```
 
+In the histograms, the pattern in purple sea urchin distribution shows that with the annual treatment of giant kelp being removed, there are more small purple sea urchins with a big peak at 3 cm while in the control where the giant kelp is left intact the sizes vary less dramatically so the sizes are more evenly distributed among the population. In the qq-plots this pattern is harder to see and but we do see that the pattern overall is "shorter" in the control group.
+
+
+## Data Wrangling
+
+
+Here I created a subset for the purple_naples_2010 data and called it purple_naples10_summary. I found the mean, median, standard deviation and sample size for the purple urchins in the Naples Reef for 2010.
+
+```{r}
+purple_naples10_summary <- purple_naples_2010 %>% 
+  group_by(common_name, treatment) %>% 
+  summarize(mean_size = round(mean(size), 2),
+            median_size = round(median(size), 2),
+            sd_size = round(sd(size), 2),
+            sample_size = n()
+            )
+```
 
 ## Data Visualization- Summary table
 
-```{r}
 
+Here I created the summary table based from the purple_naples10_summary subset for purple sea urchins from the Naples Reef in 2010.
+
+```{r}
+purple_naples10_summary %>% 
+  kbl(caption = "Table 1- Summary table for Purple Sea Urchins from Naples Reef in 2010",
+      col.names= c("Common Name", 
+                   "Treatment", 
+                   "Mean Size (cm)", 
+                   "Median Size (cm)", 
+                   "Standard Deviation", 
+                   "Sample Size")) %>% 
+  kable_classic_2(full_width = F) 
 ```
+
 
 
 
