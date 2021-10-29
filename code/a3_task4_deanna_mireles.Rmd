@@ -1,7 +1,7 @@
 ---
-title: "Task 3- Santa Barbara Sea Urchins"
+title: "Task 4- Naples Reef Purple Sea Urchins"
 author: "Deanna Mireles"
-date: "10/27/2021"
+date: "10/28/2021"
 output: 
   html_document: 
     toc: yes
@@ -14,7 +14,7 @@ This code uses data for X. The data was collected in X by X.
 
 **Data citation:** Reed, D. 2020. SBC LTER: Reef: Long-term experiment: Kelp removal: Urchin size frequency distribution ver 20. Environmental Data Initiative. https://doi.org/10.6073/pasta/5a1e9ef03aa47bd2225c0bb98a02a63b. 
 
-## Setup
+# Setup
 
 ```{r setup, include=FALSE, warning = FALSE, message = FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
@@ -22,7 +22,6 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(janitor)
 library(here)
-library(kableExtra)
 ```
 
 Here I read in the sea urchin data using the here() function.
@@ -38,41 +37,20 @@ For reference, the first 6 lines of the dataset are shown below:
 head(sea_urchin)
 ```
 
-## Section 1- Size comparisons between purple and red sea urchins
-
-#### Data Wrangling
+## Data Wrangling
 
 ```{r}
 
 ```
 
-#### Data Visualization- Histogram
+## Data Visualization- Exploratory histogram and qq-plot
 
 ```{r}
 
 ```
 
-#### Data Wrangling
 
-```{r}
-
-```
-
-#### Data Visualization- Summary table
-
-```{r}
-
-```
-
-## Section 2- Purple sea urchin counts by site and year
-
-#### Data Wrangling
-
-```{r}
-
-```
-
-#### Data Visualization- Graph
+## Data Visualization- Summary table
 
 ```{r}
 
